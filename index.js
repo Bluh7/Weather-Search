@@ -15,27 +15,6 @@ app.set('views', path.join(__dirname, 'views'))
 app.set("view engine", "ejs")
 app.use(express.static(path.join(__dirname, 'public')))
 
-const icons = {
-  "01d":"☀️" ,
-  "02d":"⛅️" ,
-  "03d":"☁️" ,
-  "04d":"☁️" ,
-  "09d":"\uD83C\uDF27" ,
-  "10d":"\uD83C\uDF26" ,
-  "11d":"⛈" ,
-  "13d":"❄️" ,
-  "50d":"\uD83C\uDF2B" ,
-  "01n":"\uD83C\uDF11" ,
-  "02n":"\uD83C\uDF11 ☁" ,
-  "03n":"☁️" ,
-  "04n":"️️☁☁" ,
-  "09n":"\uD83C\uDF27" ,
-  "10n":"☔️" ,
-  "11n":"⛈" ,
-  "13n":"❄️" ,
-  "50n":"\uD83C\uDF2B"
-}
-
 app.get('/', (req, res) => {
   res.render('index')
 })
@@ -60,14 +39,14 @@ app.get('/:city', verifyApiKey, (req, res) => {
     const feelsLike    = responseData.main.feels_like.toFixed(0)
     const description  = responseData.weather[0].description
     const iconCode     = responseData.weather[0].icon
-    const icon         = icons[iconCode]
+    const iconUrl      = `http://openweathermap.org/img/wn/${iconCode}.png`
     res.render('weather', {
       status,
       city,
       temperature,
       feelsLike,
       description,
-      icon
+      iconUrl
     })
   }).catch(({ response }) => {
     const status = response.status
