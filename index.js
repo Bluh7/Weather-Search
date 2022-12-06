@@ -31,7 +31,7 @@ app.post('/search', (req, res) => {
 app.get('/:city', verifyApiKey, (req, res) => {
   const apiKey    = req.apiKey
   const cityParam = req.params.city
-  axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${cityParam}&units=metric&appid=${apiKey}`).then((response) => {
+  axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityParam}&units=metric&appid=${apiKey}`).then((response) => {
     const status       = response.status
     const responseData = response.data
     const city         = responseData.name
@@ -39,7 +39,7 @@ app.get('/:city', verifyApiKey, (req, res) => {
     const feelsLike    = responseData.main.feels_like.toFixed(0)
     const description  = responseData.weather[0].description
     const iconCode     = responseData.weather[0].icon
-    const iconUrl      = `http://openweathermap.org/img/wn/${iconCode}.png`
+    const iconUrl      = `https://openweathermap.org/img/wn/${iconCode}.png`
     res.render('weather', {
       status,
       city,
