@@ -12,7 +12,7 @@ app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-app.use(compression()) //Compress all routes for faster loading
+app.use(compression({ level: 9 })) //Compress all routes for faster loading
 
 app.get('/', (req, res) => {
   res.render('index')
@@ -47,8 +47,8 @@ app.get('/:city', verifyApiKey, (req, res) => {
       description,
       icon
     })
-  }).catch((err) => {
-    const status = err.response.status
+  }).catch(({ response }) => {
+    const status = response.status
     if(status == 401){
       throw new Error('Invalid API key. Please check your .env file and make sure you have added your API key as OPENWEATHERMAP_API_KEY')
     }else if(status == 404){
