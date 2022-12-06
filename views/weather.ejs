@@ -1,0 +1,28 @@
+<%- include('partials/header') %>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-12" style="margin-top: 40vh;">
+        <form action="/search" method="post">
+          <div class="text-center" style="margin-bottom: 1em;">
+            <% if(status == 200) { %>
+              <h1><%= city %>, <%= temperature %>C°<%= icon %></h1>
+              <% if (temperature != feelsLike) { %>
+                <label>Current weather situation is <%= description %> and feeling like <%= feelsLike %>C°</label>
+              <% } else { %>
+                <label>Current weather situation is <%= description %></label>
+              <% } %>
+            <% }else{ %>
+              <h1>City not found 🌎</h1>
+              <label>Created by <a href="https://github.com/Bluh7" target="_blank" style="color: #fff;">Blu</a>, CSS developed by monkeys 🐒</label>
+            <% } %>
+          </div>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Enter a city name" name="city">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+          </div>
+        </form>
+      </div>
+  </div>
+</body>
+<%- include('partials/footer') %>
