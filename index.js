@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 const bodyParser = require("body-parser")
 const axios = require('axios')
-const icons = require('./icons.json')
 const compression = require('compression')
 const verifyApiKey = require('./middlewares/verifyApiKey')
 
@@ -13,6 +12,27 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 app.use(compression({ level: 9 })) //Compress all routes for faster loading
+
+const icons = {
+  "01d":"☀️" ,
+  "02d":"⛅️" ,
+  "03d":"☁️" ,
+  "04d":"☁️" ,
+  "09d":"\uD83C\uDF27" ,
+  "10d":"\uD83C\uDF26" ,
+  "11d":"⛈" ,
+  "13d":"❄️" ,
+  "50d":"\uD83C\uDF2B" ,
+  "01n":"\uD83C\uDF11" ,
+  "02n":"\uD83C\uDF11 ☁" ,
+  "03n":"☁️" ,
+  "04n":"️️☁☁" ,
+  "09n":"\uD83C\uDF27" ,
+  "10n":"☔️" ,
+  "11n":"⛈" ,
+  "13n":"❄️" ,
+  "50n":"\uD83C\uDF2B"
+}
 
 app.get('/', (req, res) => {
   res.render('index')
