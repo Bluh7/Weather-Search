@@ -6,13 +6,14 @@ const compression = require('compression')
 const verifyApiKey = require('./middlewares/verifyApiKey')
 const path = require('path')
 
-app.set("view engine", "ejs")
-app.use(express.static(path.join(__dirname + '../public')))
-
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 app.use(compression({ level: 9 })) //Compress all routes for faster loading
+
+app.set('views', path.join(__dirname, 'views'))
+app.set("view engine", "ejs")
+app.use(express.static(path.join(__dirname, 'public')))
 
 const icons = {
   "01d":"☀️" ,
