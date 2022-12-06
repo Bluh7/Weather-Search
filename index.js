@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require("body-parser")
 const axios = require('axios')
-const icons = require('./icons/icons.json')
+const icons = require('./Icons/icons.json')
 const compression = require('compression')
 const verifyApiKey = require('./middlewares/verifyApiKey')
 
