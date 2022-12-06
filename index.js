@@ -4,9 +4,10 @@ const bodyParser = require("body-parser")
 const axios = require('axios')
 const compression = require('compression')
 const verifyApiKey = require('./middlewares/verifyApiKey')
+const path = require('path')
 
 app.set("view engine", "ejs")
-app.use(express.static("public"))
+app.use(express.static(path.join(__dirname + '../public')))
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
