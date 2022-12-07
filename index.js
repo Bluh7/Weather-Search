@@ -5,8 +5,8 @@ const axios = require('axios')
 const compression = require('compression')
 const verifyApiKey = require('./middlewares/verifyApiKey')
 const getCityState = require('./middlewares/getCityState')
+const helmet = require('helmet')
 const path = require('path')
-const helmet = require("helmet")
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -17,18 +17,9 @@ app.set('views', path.join(__dirname, 'views'))
 app.set("view engine", "ejs")
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use(helmet.crossOriginResourcePolicy())
-app.use(helmet.dnsPrefetchControl())
-app.use(helmet.expectCt())
-app.use(helmet.frameguard())
-app.use(helmet.hidePoweredBy())
-app.use(helmet.hsts())
-app.use(helmet.ieNoOpen())
-app.use(helmet.noSniff())
-app.use(helmet.originAgentCluster())
-app.use(helmet.permittedCrossDomainPolicies())
-app.use(helmet.referrerPolicy())
-app.use(helmet.xssFilter())
+app.use(helmet({
+  contentSecurityPolicy: false,
+}))
 
 app.get('/', (req, res) => {
   res.render('index')
@@ -82,6 +73,7 @@ app.get('/:city', verifyApiKey, getCityState, async (req, res) => {
 })
 
 app.get('*', (req, res) => {
+  res.header('X-Frame-Options', 'cross-origin')
   res.redirect('/')
 })
 
