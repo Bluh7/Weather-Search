@@ -5,7 +5,9 @@ const axios = require('axios')
 const compression = require('compression')
 const verifyApiKey = require('./middlewares/verifyApiKey')
 const getCityState = require('./middlewares/getCityState')
+const contentPolicyAndXss = require('./middlewares/contentPolicyAndXss')
 const helmet = require('helmet')
+const rateLimit = require('express-rate-limit')
 const path = require('path')
 
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -20,11 +22,14 @@ app.use(express.static(path.join(__dirname, 'public')))
 // Set HTTP headers to prevent clickjacking and other security issues
 app.use(helmet())
 
-app.get('/', (req, res) => {
-  // Set X-XSS-Protection header to block XSS attacks
-  res.header('X-XSS-Protection', '1; mode=block')
-  // Set Content-Security-Policy header to allow scripts from cdn.jsdelivr.net
-  res.header('Content-Security-Policy', 'script-src-elem https://cdn.jsdelivr.net/;')
+// Set a rate limiter to prevent brute force attacks
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes window
+  max: 100 // limit each IP to 100 requests per windowMs
+})
+app.use(limiter)
+
+app.get('/', contentPolicyAndXss, (req, res) => {
   res.render('index')
 })
 
@@ -38,11 +43,7 @@ app.post('/search', (req, res) => {
   }
 })
 
-app.get('/city/:city', verifyApiKey, getCityState, async (req, res) => {
-  res.header('X-XSS-Protection', '1; mode=block')
-  // Set Content-Security-Policy header to allow images from openweathermap.org
-  res.header('Content-Security-Policy', 'img-src https://openweathermap.org/;')
-  res.header('Content-Security-Policy', 'script-src-elem https://cdn.jsdelivr.net/;')
+app.get('/city/:city', contentPolicyAndXss ,verifyApiKey, getCityState, async (req, res) => {
   const apiKey       = req.apiKey
   const cityParam    = req.params.city.trim()
   const cityState    = await req.cityState
