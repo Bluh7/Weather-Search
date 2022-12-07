@@ -17,9 +17,8 @@ app.set('views', path.join(__dirname, 'views'))
 app.set("view engine", "ejs")
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use(helmet({
-  contentSecurityPolicy: false,
-}))
+// Set HTTP headers to prevent clickjacking and other security issues
+app.use(helmet())
 
 app.get('/', (req, res) => {
   res.render('index')
@@ -37,6 +36,8 @@ app.post('/search', (req, res) => {
 })
 
 app.get('/:city', verifyApiKey, getCityState, async (req, res) => {
+  // Set Content-Security-Policy header to allow images from openweathermap.org
+  res.header('Content-Security-Policy', 'img-src https://openweathermap.org/;')
   const apiKey       = req.apiKey
   const cityParam    = req.params.city.trim()
   const cityState    = await req.cityState
