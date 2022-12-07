@@ -33,11 +33,7 @@ app.post('/search', (req, res) => {
 
 app.get('/:city', verifyApiKey, getCityState, async (req, res) => {
   const apiKey       = req.apiKey
-  let cityParam    = req.params.city
-  if(cityParam.at(-1) == ' '){
-    // Remove last space if it exists
-    cityParam = cityParam.slice(0, -1)
-  }
+  const cityParam    = req.params.city.trim()
   const cityState    = await req.cityState
   axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityParam}&units=metric&appid=${apiKey}`).then((response) => {
     const status       = response.status
