@@ -23,8 +23,8 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrcElem: ["'self'", 'https://cdn.jsdelivr.net/'],
-      imgSrc: ["'self'", 'https://openweathermap.org/']
+      imgSrc: ["'self'", 'https://openweathermap.org/'],
+      scriptSrc: ["'self'", 'https://cdn.jsdelivr.net/'],
     }
   }
 }))
