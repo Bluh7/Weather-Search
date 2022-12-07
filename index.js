@@ -17,9 +17,18 @@ app.set('views', path.join(__dirname, 'views'))
 app.set("view engine", "ejs")
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use(helmet({
-  contentSecurityPolicy: false,
-}))
+app.use(helmet.crossOriginResourcePolicy())
+app.use(helmet.dnsPrefetchControl())
+app.use(helmet.expectCt())
+app.use(helmet.frameguard())
+app.use(helmet.hidePoweredBy())
+app.use(helmet.hsts())
+app.use(helmet.ieNoOpen())
+app.use(helmet.noSniff())
+app.use(helmet.originAgentCluster())
+app.use(helmet.permittedCrossDomainPolicies())
+app.use(helmet.referrerPolicy())
+app.use(helmet.xssFilter())
 
 app.get('/', (req, res) => {
   res.render('index')
