@@ -26,14 +26,17 @@ app.get('/', (req, res) => {
 })
 
 app.post('/search', (req, res) => {
-  res.header('X-XSS-Protection', '1; mode=block')
+  const bannedChars = ['/', '\\', '?', '%', '*', ':', '|', '"', '<', '>', '.', '&']
   const city = req.body.city
-  // Get the current URL excluding the actual path. This can prevent the user from be redirected to a malicious site
-  const currentUrl = `${req.protocol}://${req.get('host')}`
-  res.redirect(`${currentUrl}/${city}`)
+  // Check if city name contains any banned characters and if the city name is not empty
+  if(city && !bannedChars.some(char => city.includes(char))){
+    res.redirect(`/city/${city.trim()}`)
+  }else{
+    res.redirect('/')
+  }
 })
 
-app.get('/:city', verifyApiKey, getCityState, async (req, res) => {
+app.get('/city/:city', verifyApiKey, getCityState, async (req, res) => {
   // Set Content-Security-Policy header to allow images from openweathermap.org
   res.header('Content-Security-Policy', 'img-src https://openweathermap.org/;')
   res.header('X-XSS-Protection', '1; mode=block')
