@@ -6,7 +6,10 @@
         <form action="/search" method="post">
           <div class="text-center" style="margin-bottom: 1em;">
             <% if(status == 200) { %>
-              <h1><%= city %>, <%= cityState %> <%= temperature %>C°<img crossorigin="anonymous" src="<%= iconUrl %>"></h1>
+              <% if (cityState) { %>
+                <h1><%= city %>, <%= cityState %> <%= temperature %>C°<img crossorigin="anonymous" src="<%= iconUrl %>"></h1>
+              <% } else { %>
+                <h1><%= city %> <%= temperature %>C°<img crossorigin="anonymous" src="<%= iconUrl %>"></h1>
               <% if (temperature != feelsLike) { %>
                 <label>Current weather situation is <%= description %> and feeling like <%= feelsLike %>C°</label>
               <% } else { %>

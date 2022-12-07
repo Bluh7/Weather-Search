@@ -1,5 +1,7 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
+const port = process.env.PORT || 3000
 const bodyParser = require("body-parser")
 const axios = require('axios')
 const compression = require('compression')
@@ -36,14 +38,15 @@ app.get('/', contentPolicyAndXss, (req, res) => {
 app.post('/search', (req, res) => {
   const city = req.body.city
   const bannedChars = ['<', '>', '(', ')', '{', '}', '[', ']', '=', '+', '-', '*', '/', '\\', '|', '&', '^', '%', '$', '#', '@', '!', '?', '~', '`', '"', "'", ';', ':', ',', '.']
+  // Check if city is a string and doesn't contain any banned characters
   if(city && typeof city == 'string' && !bannedChars.some(char => city.includes(char))){
-    res.redirect(`/city/${city}`)
+    res.redirect(`/Search/${city}`)
   }else{
     res.redirect('/')
   }
 })
 
-app.get('/city/:city', contentPolicyAndXss ,verifyApiKey, getCityState, async (req, res) => {
+app.get('/Search/:city', contentPolicyAndXss ,verifyApiKey, getCityState, async (req, res) => {
   const apiKey       = req.apiKey
   const cityParam    = req.params.city.trim()
   const cityState    = await req.cityState
@@ -83,7 +86,7 @@ app.get('*', (req, res) => {
   res.redirect('/')
 })
 
-app.listen(3000, (err) => {
+app.listen(port, (err) => {
   if(err){
     console.log(err)
   }else{
