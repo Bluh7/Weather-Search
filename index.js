@@ -21,10 +21,12 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(helmet())
 
 app.get('/', (req, res) => {
+  res.header('X-XSS-Protection', '1; mode=block')
   res.render('index')
 })
 
 app.post('/search', (req, res) => {
+  res.header('X-XSS-Protection', '1; mode=block')
   const bannedChars = ['/', '\\', '?', '%', '*', ':', '|', '"', '<', '>', '.', '&']
   const city = req.body.city
   // Check if city name contains any banned characters, if the city name is not empty and if it is not an whitespace
@@ -38,6 +40,7 @@ app.post('/search', (req, res) => {
 app.get('/:city', verifyApiKey, getCityState, async (req, res) => {
   // Set Content-Security-Policy header to allow images from openweathermap.org
   res.header('Content-Security-Policy', 'img-src https://openweathermap.org/;')
+  res.header('X-XSS-Protection', '1; mode=block')
   const apiKey       = req.apiKey
   const cityParam    = req.params.city.trim()
   const cityState    = await req.cityState
@@ -74,7 +77,7 @@ app.get('/:city', verifyApiKey, getCityState, async (req, res) => {
 })
 
 app.get('*', (req, res) => {
-  res.header('X-Frame-Options', 'cross-origin')
+  res.header('X-XSS-Protection', '1; mode=block')
   res.redirect('/')
 })
 
