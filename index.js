@@ -4,6 +4,7 @@ const bodyParser = require("body-parser")
 const axios = require('axios')
 const compression = require('compression')
 const verifyApiKey = require('./middlewares/verifyApiKey')
+const getCityState = require('./middlewares/getCityState')
 const path = require('path')
 
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -30,9 +31,10 @@ app.post('/search', (req, res) => {
   }
 })
 
-app.get('/:city', verifyApiKey, (req, res) => {
-  const apiKey    = req.apiKey
-  const cityParam = req.params.city
+app.get('/:city', verifyApiKey, getCityState, async (req, res) => {
+  const apiKey       = req.apiKey
+  const cityParam    = req.params.city
+  const cityState    = await req.cityState
   axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityParam}&units=metric&appid=${apiKey}`).then((response) => {
     const status       = response.status
     const responseData = response.data
@@ -48,7 +50,8 @@ app.get('/:city', verifyApiKey, (req, res) => {
       temperature,
       feelsLike,
       description,
-      iconUrl
+      iconUrl,
+      cityState
     })
   }).catch((err) => {
     const status = err.response.status
