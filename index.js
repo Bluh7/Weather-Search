@@ -6,7 +6,7 @@ const compression = require('compression')
 const verifyApiKey = require('./middlewares/verifyApiKey')
 const getCityState = require('./middlewares/getCityState')
 const path = require('path')
-const xXssProtection = require("x-xss-protection")
+const helmet = require("helmet")
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -17,7 +17,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.set("view engine", "ejs")
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use(xXssProtection())
+app.use(helmet())
 
 app.get('/', (req, res) => {
   res.render('index')
