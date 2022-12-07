@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 // Set HTTP headers to prevent clickjacking and other security issues
 app.use(helmet())
 
-// Set a rate limiter to prevent brute force attacks
+// Set a rate limiter to prevent DDoS attacks
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes window
   max: 100 // limit each IP to 100 requests per windowMs
@@ -35,8 +35,8 @@ app.get('/', contentPolicyAndXss, (req, res) => {
 
 app.post('/search', (req, res) => {
   const city = req.body.city
-  // Regex to check if city name contains only letters, numbers and spaces
-  if(city && typeof city == 'string' && city.match(/^[a-zA-Z0-9\s]+$/g) && !city.match(/^\s*$/g)){
+  const bannedChars = ['<', '>', '(', ')', '{', '}', '[', ']', '=', '+', '-', '*', '/', '\\', '|', '&', '^', '%', '$', '#', '@', '!', '?', '~', '`', '"', "'", ';', ':', ',', '.']
+  if(city && typeof city == 'string' && !bannedChars.some(char => city.includes(char))){
     res.redirect(`/city/${city}`)
   }else{
     res.redirect('/')
