@@ -30,8 +30,8 @@ app.post('/search', (req, res) => {
   const bannedChars = ['/', '\\', '?', '%', '*', ':', '|', '"', '<', '>', '.', '&']
   const city = req.body.city
   // Check if city name contains any banned characters, if the city name is not empty and if it is not an whitespace
-  if(city && !bannedChars.some(char => city.includes(char)) && city.trim()){
-    res.redirect(`/${city}`)
+  if(city && !bannedChars.some(char => city.includes(char))){
+    res.redirect(`/${city.trim()}`)
   }else{
     res.redirect('/')
   }
