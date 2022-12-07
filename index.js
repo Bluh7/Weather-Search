@@ -28,14 +28,10 @@ app.get('/', (req, res) => {
 app.post('/search', (req, res) => {
   res.header('X-XSS-Protection', '1; mode=block')
   const city = req.body.city
-  // Check if city name is not empty
-  if(city){
-    // Get the current URL excluding the actual path. This can prevent the user from be redirected to a malicious site
-    const currentUrl = `${req.protocol}://${req.get('host')}`
-    res.redirect(`${currentUrl}/${city}`)
-  }else{
-    res.redirect('/')
-  }
+  // Get the current URL excluding the actual path. This can prevent the user from be redirected to a malicious site
+  const currentUrl = `${req.protocol}://${req.get('host')}`
+  res.redirect(`${currentUrl}/${city}`)
+  res.redirect('/')
 })
 
 app.get('/:city', verifyApiKey, getCityState, async (req, res) => {
