@@ -31,7 +31,6 @@ app.post('/search', (req, res) => {
   // Get the current URL excluding the actual path. This can prevent the user from be redirected to a malicious site
   const currentUrl = `${req.protocol}://${req.get('host')}`
   res.redirect(`${currentUrl}/${city}`)
-  res.redirect('/')
 })
 
 app.get('/:city', verifyApiKey, getCityState, async (req, res) => {
