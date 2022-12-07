@@ -26,11 +26,10 @@ app.get('/', (req, res) => {
 })
 
 app.post('/search', (req, res) => {
-  const bannedChars = ['/', '\\', '?', '%', '*', ':', '|', '"', '<', '>', '.', '&']
   const city = req.body.city
-  // Check if city name contains any banned characters and if the city name is not empty
-  if(city && !bannedChars.some(char => city.includes(char))){
-    res.redirect(`/city/${city.trim()}`)
+  // Regex to check if city name contains only letters, numbers and spaces
+  if(city.match(/^[a-zA-Z0-9\s]+$/g) && !city.match(/^\s*$/g)){
+    res.redirect(`/city/${city}`)
   }else{
     res.redirect('/')
   }
