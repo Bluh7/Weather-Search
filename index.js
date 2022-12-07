@@ -17,19 +17,14 @@ app.set('views', path.join(__dirname, 'views'))
 app.set("view engine", "ejs")
 app.use(express.static(path.join(__dirname, 'public')))
 
-// Set HTTP headers to prevent clickjacking and other security issues and allow only scripts from cdn.jsdelivr.net and images from openweathermap.org
-app.use(helmet({
-  xssFilter: true,
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      imgSrc: ["'self'", 'https://openweathermap.org/'],
-      scriptSrc: ["'self'", 'https://cdn.jsdelivr.net/'],
-    }
-  }
-}))
+// Set HTTP headers to prevent clickjacking and other security issues
+app.use(helmet())
 
 app.get('/', (req, res) => {
+  // Set X-XSS-Protection header to block XSS attacks
+  res.header('X-XSS-Protection', '1; mode=block')
+  // Set Content-Security-Policy header to allow scripts from cdn.jsdelivr.net
+  res.header('Content-Security-Policy', 'script-src-elem https://cdn.jsdelivr.net/;')
   res.render('index')
 })
 
@@ -44,6 +39,10 @@ app.post('/search', (req, res) => {
 })
 
 app.get('/city/:city', verifyApiKey, getCityState, async (req, res) => {
+  res.header('X-XSS-Protection', '1; mode=block')
+  // Set Content-Security-Policy header to allow images from openweathermap.org
+  res.header('Content-Security-Policy', 'img-src https://openweathermap.org/;')
+  res.header('Content-Security-Policy', 'script-src-elem https://cdn.jsdelivr.net/;')
   const apiKey       = req.apiKey
   const cityParam    = req.params.city.trim()
   const cityState    = await req.cityState
