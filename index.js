@@ -20,8 +20,10 @@ app.get('/', (req, res) => {
 })
 
 app.post('/search', (req, res) => {
+  const bannedChars = ['/', '\\', '?', '%', '*', ':', '|', '"', '<', '>', '.']
   const city = req.body.city
-  if(city.length > 0 && city != '/'){
+  // Check if city name contains any banned characters and if the city name is not empty
+  if(city && !bannedChars.some(char => city.includes(char))){
     res.redirect(`/${city}`)
   }else{
     res.redirect('/')
@@ -48,16 +50,16 @@ app.get('/:city', verifyApiKey, (req, res) => {
       description,
       iconUrl
     })
-  }).catch(({ response }) => {
-    const status = response.status
+  }).catch((err) => {
+    const status = err.response.status
     if(status == 401){
       throw new Error('Invalid API key. Please check your .env file and make sure you have added your API key as OPENWEATHERMAP_API_KEY')
-    }else if(status == 404){
+    }else if(status == 404 || status == 400){
       res.render('weather', {
         status
       })
     }else{
-      throw new Error('Something went wrong. Please try again later.')
+      throw new Error(err)
     }
   })
 })
