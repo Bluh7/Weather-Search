@@ -1,12 +1,12 @@
-*{
-  font-family: 'Proxima Nova', sans-serif
+* {
+  font-family: "Proxima Nova", sans-serif;
 }
 
 body {
   background: linear-gradient(#141e30, #243b55);
   width: 100vw;
   height: 100vh;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .form-control {
@@ -29,35 +29,35 @@ body {
   color: #243b55;
 }
 
-.input-group-text{
+.input-group-text {
   border-radius: 50px;
   border: none;
   background: #fff;
   color: #243b55;
 }
 
-.btn{
-  background: #FFF !important;
+.btn {
+  background: #fff !important;
   border: none;
 }
 
-.btn:hover{
-  background: #FFF !important;
+.btn:hover {
+  background: #fff !important;
   border: none;
 }
 
-.btn:active{
-  background: #FFF !important;
+.btn:active {
+  background: #fff !important;
   border: none;
 }
 
-.search-icon-backgroud{
+.search-icon-backgroud {
   background: #243b55;
   border-radius: 50px;
   padding: 0.6em;
 }
 
-.footer{
+.footer {
   position: fixed;
   left: 0;
   bottom: 0;
