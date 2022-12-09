@@ -1,5 +1,49 @@
 body {
-  background-color: #12232E;
+  background: linear-gradient(#141e30, #243b55);
+  width: 100vw;
+  height: 100vh;
   color: #FFFFFF;
   font-family: 'Proxima Nova', sans-serif;
+}
+
+.form-control {
+  border-radius: 50px;
+  border: none;
+  color: #243b55;
+  background: #fff;
+  font-size: 1.2em;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border: none;
+  background: #fff;
+  color: #243b55;
+}
+
+.form-control::placeholder {
+  color: #243b55;
+}
+
+.input-group-text{
+  border-radius: 50px;
+  border: none;
+  background: #fff;
+  color: #243b55;
+}
+
+.btn{
+  background: #FFF !important;
+  border: none;
+}
+
+.btn:hover{
+  background: #FFF !important;
+  border: none;
+}
+
+.btn:active{
+  background: #FFF !important;
+  border: none;
 }
