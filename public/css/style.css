@@ -47,3 +47,9 @@ body {
   background: #FFF !important;
   border: none;
 }
+
+.search-icon-backgroud{
+  background: #243b55;
+  border-radius: 50px;
+  padding: 0.6em;
+}
