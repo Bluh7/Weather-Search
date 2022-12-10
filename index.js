@@ -7,7 +7,7 @@ const axios = require("axios");
 const compression = require("compression");
 const verifyApiKey = require("./middlewares/verifyApiKey");
 const getCityState = require("./middlewares/getCityState");
-const contentPolicyAndXss = require("./middlewares/contentPolicyAndXss");
+const httpHeaders = require("./middlewares/httpHeaders");
 const verifyCityInput = require("./middlewares/verifyCityInput");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
@@ -32,7 +32,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-app.get("/", contentPolicyAndXss, (req, res) => {
+app.get("/", httpHeaders, (req, res) => {
   res.render("index");
 });
 
@@ -43,7 +43,7 @@ app.post("/search", verifyCityInput, (req, res) => {
 
 app.get(
   "/Search/:city",
-  contentPolicyAndXss,
+  httpHeaders,
   verifyApiKey,
   getCityState,
   async (req, res) => {

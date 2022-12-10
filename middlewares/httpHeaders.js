@@ -8,6 +8,9 @@ const contentPolicyAndXss = (req, res, next) => {
     "script-src-elem https://cdn.jsdelivr.net/;"
   );
   res.header("Content-Security-Policy", "img-src https://openweathermap.org/;");
+
+  // Remove X-Powered-By header to prevent information disclosure about the server
+  res.removeHeader("X-Powered-By")
   next();
 };
 
