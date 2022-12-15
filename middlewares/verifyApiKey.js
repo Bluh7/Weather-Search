@@ -7,6 +7,7 @@ const verifyApiKey = (req, res, next) => {
       "No API key found. Please create a .env file in the root directory and add your API key as OPENWEATHERMAP_API_KEY"
     );
   } else {
+    // Set the API key in the request object so that it can be accessed by other middlewares and routes.
     req.apiKey = apiKey;
     next();
   }

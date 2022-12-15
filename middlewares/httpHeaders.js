@@ -10,7 +10,7 @@ const contentPolicyAndXss = (req, res, next) => {
   res.header("Content-Security-Policy", "img-src https://openweathermap.org/;");
 
   // Remove X-Powered-By header to prevent information disclosure about the server
-  res.removeHeader("X-Powered-By")
+  res.removeHeader("X-Powered-By");
   next();
 };
 
