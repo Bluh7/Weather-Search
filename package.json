@@ -12,7 +12,7 @@
   "author": "Gabriel Perazzo",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.2.1",
+    "axios": "^1.2.2",
     "compression": "^1.7.4",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
